@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Coders Tokyo</title>
+  </head>
+  <body>
+    <a href="newUser.html" >Add User</a>
+    <ol id="listUsers">
+      
+    </ol>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      var listUsers = document.getElementById('listUsers');
+      listUsers.addEventListener('click',clickList);
+      
+      function clickList(event) {
+        var btn = event.target;
+        var i = parseInt(btn.dataset.id);
+        console.log(i);
+        
+        const data = {
+          id:i
+        }
+        axios.delete('http://localhost:9081/results/'+i)
+          .then(function(res) {
+            console.log(res.statusText);
+            location.reload()
+          })
+          .catch(function(err) {
+            console.log(err);
+          })
+      }
+
+      axios.get('http://localhost:9081/results')
+          .then(function(res) {
+            render(res.data);
+          })
+          .catch(function(err) {
+            return err;
+          });
+      
+      //show list data
+      function render(users) {
+        var data = users.map(function(user) {
+          return '<li data-id='+user.id+'>'+user.name+' <button >Delete</button></li>';
+        })
+        listUsers.innerHTML = data.join('');
+      }
+
+      
+      
+      </script>
+  </body>
+</html>
