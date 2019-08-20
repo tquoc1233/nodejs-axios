@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Coders Tokyo</title>
+  </head>
+  <body>
+    <h2>Edit User</h2>
+    <input type="text" id="user" >
+    <button type="button" id="editUser" >Edit</button>
+    <a href="index.html">
+        <button >Back</button>
+    </a>
+    
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        //get id user
+        var id = location.hash.substr(1);
+        var inputUser = document.getElementById('user');
+        var btnEdit = document.getElementById('editUser');
+
+        //get data follow id
+        axios.get('http://localhost:9081/results/'+id)
+            .then(function(res) {
+                inputUser.value = res.data.name;
+            })
+            .catch(function(err) {
+                console.log(err);
+            });
+        
+        //edit user
+        btnEdit.addEventListener('click',editUser);
+
+        function editUser() {
+            var dataUser = inputUser.value;
+            
+            axios.put('http://localhost:9081/results/'+id,{name:dataUser})
+                .then(function(res) {
+                    console.log(res);
+                    alert('Edit successfully!');
+                })
+                .catch(function(err) {
+                    console.log(err);
+                }); 
+        }    
+      </script>
+  </body>
+</html>

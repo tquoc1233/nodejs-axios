@@ -5,19 +5,29 @@
   </head>
   <body>
     <a href="newUser.html" >Add User</a>
-    <ol id="listUsers">
+    <table width="300px" style="text-align: center">
+      <caption>List Users</caption>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="listUsers">
+
+      </tbody>
+    </table>
       
-    </ol>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
       var listUsers = document.getElementById('listUsers');
-      listUsers.addEventListener('click',clickList);
+      // listUsers.addEventListener('click',clickList);
       
-      function clickList(event) {
-        var btn = event.target;
-        var i = parseInt(btn.dataset.id);
-        console.log(i);
+      function clickList(element) {
         
+        var btnDelete = element.parentNode;
+        var i = parseInt(btnDelete.dataset.id);
         const data = {
           id:i
         }
@@ -41,9 +51,11 @@
       
       //show list data
       function render(users) {
+        let i=0;
         var data = users.map(function(user) {
-          return '<li data-id='+user.id+'>'+user.name+' <button >Delete</button></li>';
+          return '<tr><td>'+(i+1)+'</td><td>'+user.name+'</td><td><a href="editUser.html#'+user.id+'"><button>Edit</button></a> <button class="btn-delete" onclick="clickList(this)" data-id='+user.id+' >Delete</button></td></tr>';
         })
+
         listUsers.innerHTML = data.join('');
       }
 
